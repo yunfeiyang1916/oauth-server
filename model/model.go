@@ -1,6 +1,6 @@
 package model
 
-import "github.com/yunfeiyang1916/oauth-server/define"
+import _code "github.com/yunfeiyang1916/oauth-server/api/code"
 
 // ApiResult 请求结果
 type ApiResult struct {
@@ -26,7 +26,7 @@ type Page struct {
 
 // GetApiResult 获取Api响应接口
 func GetApiResult(code int) ApiResult {
-	msg := define.GetErrorMsg(code)
+	msg := _code.GetErrorMsg(code)
 	if msg == "" {
 		msg = "操作失败，请稍后重试"
 	}

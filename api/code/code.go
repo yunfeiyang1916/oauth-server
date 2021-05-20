@@ -1,4 +1,4 @@
-package define
+package code
 
 var e = make(map[int]string)
 

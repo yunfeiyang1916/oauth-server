@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"net/http"
+	"time"
+)
 
 // OAuth2Token 令牌
 type OAuth2Token struct {
@@ -25,4 +28,16 @@ type OAuth2 struct {
 	Client Client
 	// 用户详情
 	User User
+}
+
+// TokenReq 令牌请求
+type TokenReq struct {
+	GrantType string
+	Reader    *http.Request
+}
+
+// TokenResp 令牌响应
+type TokenResp struct {
+	AccessToken *OAuth2Token `json:"access_token"`
+	Error       string       `json:"error"`
 }
