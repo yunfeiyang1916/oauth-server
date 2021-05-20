@@ -1,0 +1,19 @@
+# 自定义配置，必须放在顶层[]之上，否则读取不到
+env = "dev"
+
+[server]
+    service_name = "oauth-server"
+    port = 8990
+
+[log]
+    level = "info"
+    logpath = "logs"
+    rotate = "hour"
+    succ_stat_code = [200, 40000, 50000]
+
+# 数据库
+[[database]]
+    name = "oauth"
+    master = "root:root123456@tcp(127.0.0.1:3306)/oauth?charset=utf8mb4&parseTime=true&loc=Local&readTimeout=10s&max_active=100"
+    slaves = ["root:root123456@tcp(127.0.0.1:3306)/oauth?charset=utf8mb4&parseTime=true&loc=Local&readTimeout=3s&max_active=100"]
+

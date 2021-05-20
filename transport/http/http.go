@@ -2,8 +2,11 @@ package http
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/yunfeiyang1916/oauth-server/conf"
 
 	"github.com/yunfeiyang1916/oauth-server/service"
 
@@ -18,7 +21,7 @@ var (
 func Init(srv *service.Container) {
 	handler := newHttpHandler(srv)
 	server := http.Server{
-		Addr:    ":8090",
+		Addr:    fmt.Sprintf(":%d", conf.GlobalConfig.ServerConfig.Port),
 		Handler: handler,
 		// Good practice to set timeouts to avoid Slowloris attacks.
 		WriteTimeout: time.Second * 15,
