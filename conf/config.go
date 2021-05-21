@@ -1,8 +1,8 @@
 package conf
 
 import (
+	"github.com/yunfeiyang1916/toolkit/framework"
 	"github.com/yunfeiyang1916/toolkit/logging"
-	"github.com/yunfeiyang1916/toolkit/tomlconfig"
 )
 
 // GlobalConfig 全局配置
@@ -15,8 +15,6 @@ type Config struct {
 	// 服务配置
 	ServerConfig *ServerConfig `toml:"server"`
 	LogConfig    *LogConfig    `toml:"log"`
-	// 数据库配置
-	DBConfig []DBConfig `toml:"database"`
 }
 
 // ServerConfig 服务配置
@@ -41,9 +39,10 @@ type DBConfig struct {
 	Name string `toml:"name"`
 }
 
-func Init(path string) (*Config, error) {
+func Init() (*Config, error) {
 	cfg := &Config{}
-	_, err := tomlconfig.NewConfig(path, &cfg)
+	//_, err := tomlconfig.NewConfig(path, cfg)
+	err := framework.ConfigInstance().Scan(cfg)
 	GlobalConfig = cfg
 	initLogging(cfg.LogConfig)
 	return cfg, err
@@ -54,4 +53,8 @@ func initLogging(logConfig *LogConfig) {
 	logging.SetLevelByString(logConfig.Level)
 	logging.SetOutputPath(logConfig.LogPath)
 	logging.SetRotateByHour()
+}
+
+func initDB(cfg *Config) {
+
 }

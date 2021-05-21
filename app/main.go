@@ -9,6 +9,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/yunfeiyang1916/toolkit/framework"
+
 	"github.com/yunfeiyang1916/toolkit/logging"
 
 	"github.com/yunfeiyang1916/oauth-server/conf"
@@ -17,12 +19,24 @@ import (
 	"github.com/yunfeiyang1916/oauth-server/transport/http"
 )
 
-func main() {
-	// 启动参数
+func init() {
 	configS := flag.String("config", "config/config.toml", "Configuration file")
+	appS := flag.String("app", "", "App dir")
 	flag.Parse()
+
+	framework.Init(framework.ConfigPath(*configS))
+
+	if *appS != "" {
+		framework.InitNamespace(*appS)
+	}
+
+}
+
+func main() {
+	defer framework.Shutdown()
+
 	// 初始化配置
-	_, err := conf.Init(*configS)
+	_, err := conf.Init()
 	if err != nil {
 		logging.Fatalf("service config init error %s", err)
 	}
