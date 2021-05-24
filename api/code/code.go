@@ -1,6 +1,6 @@
 package code
 
-var e = make(map[int]string)
+var e = make(map[int32]string)
 
 const (
 	// ErrOK 操作成功
@@ -18,10 +18,13 @@ func init() {
 }
 
 // GetErrorMsg 通过code获取错误信息
-func GetErrorMsg(code int) string {
+func GetErrorMsg(code int32) string {
 	defMsg := "操作失败，请稍后重试"
 	if errMsg, ok := e[code]; ok && errMsg != "" {
 		return errMsg
+	}
+	if ErrOK == code {
+
 	}
 	return defMsg
 }

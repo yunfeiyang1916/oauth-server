@@ -6,7 +6,10 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/yunfeiyang1916/toolkit/framework"
+
 	"github.com/yunfeiyang1916/oauth-server/conf"
+	httpserver "github.com/yunfeiyang1916/toolkit/framework/http/server"
 
 	"github.com/yunfeiyang1916/oauth-server/service"
 
@@ -14,7 +17,8 @@ import (
 )
 
 var (
-	server http.Server
+	server     http.Server
+	httpServer httpserver.Server
 )
 
 // Init 启动http服务
@@ -30,6 +34,22 @@ func Init(srv *service.Container) {
 	}
 	go func() {
 		if err := server.ListenAndServe(); err != nil {
+			logging.Fatalf("http server start failed, err %v", err)
+		}
+	}()
+}
+
+func InitFrm(s *service.Container) {
+	srv = s
+	httpServer = framework.HTTPServer()
+	// add namespace plugin
+	// httpServer.Use(httpplugin.Namespace)
+
+	// register handler with http route
+	initRouter(httpServer)
+	// start a http server
+	go func() {
+		if err := httpServer.Run(); err != nil {
 			logging.Fatalf("http server start failed, err %v", err)
 		}
 	}()

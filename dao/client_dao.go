@@ -18,6 +18,7 @@ func newClientDao() *ClientDao {
 // FindById 根据id获取
 func (c *ClientDao) FindById(id string) (model.Client, error) {
 	db := sql.Get("oauth").Master()
+	//panic("抛出一个异常")
 	fmt.Println(db)
 	return model.Client{}, nil
 }

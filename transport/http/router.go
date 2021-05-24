@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	httpserver "github.com/yunfeiyang1916/toolkit/framework/http/server"
+
 	"github.com/go-kit/kit/transport"
 
 	"github.com/go-kit/kit/log"
@@ -24,6 +26,7 @@ import (
 var (
 	options      []kithttp.ServerOption
 	eptContainer *endpoint.Container
+	srv          *service.Container
 )
 
 // 成功json响应
@@ -54,4 +57,14 @@ func newHttpHandler(srv *service.Container) http.Handler {
 	}
 	r.Methods(http.MethodGet).Path("/api/v1/oauth/client/get").Handler(getClient())
 	return r
+}
+
+func initRouter(s httpserver.Server) {
+	s.GET("/api/v1/oauth/client/get", qywxGetCallback)
+}
+
+// 企业微信get回调
+func qywxGetCallback(c *httpserver.Context) {
+	resp := srv.ClientService.Get(c.Ctx, model.ClientReq{})
+	c.Raw(resp, resp.Code)
 }

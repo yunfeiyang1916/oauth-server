@@ -4,6 +4,8 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/go-kit/kit/endpoint"
+
 	"github.com/yunfeiyang1916/oauth-server/model"
 
 	kithttp "github.com/go-kit/kit/transport/http"
@@ -20,6 +22,13 @@ func getClient() *kithttp.Server {
 			req.ClientSecret = r.URL.Query().Get("client_secret")
 			return req, nil
 		},
+		encodeJsonResp,
+		options...)
+}
+
+func getHandler(e endpoint.Endpoint, dec kithttp.DecodeRequestFunc) *kithttp.Server {
+	return kithttp.NewServer(plugins.CheckTokenMiddleware()(e),
+		dec,
 		encodeJsonResp,
 		options...)
 }

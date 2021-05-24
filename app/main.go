@@ -43,8 +43,8 @@ func main() {
 
 	srv := service.New()
 	defer srv.Close()
-	http.Init(srv)
-
+	//http.Init(srv)
+	http.InitFrm(srv)
 	sigChan := make(chan os.Signal, 1)
 	// 监听退出信号
 	signal.Notify(sigChan, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
